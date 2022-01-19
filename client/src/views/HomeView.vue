@@ -6,7 +6,7 @@
 
 <script>
 import leaflet from "leaflet";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 export default {
   name: "HomeView",
   setup() {
@@ -29,7 +29,34 @@ export default {
           }
         )
         .addTo(map);
+
+      getGeolocation();
     });
+
+    const coords = ref(null);
+    const fetchCoords = ref(null);
+
+    const getGeolocation = () => {
+      fetchCoords.value = true;
+      navigator.geolocation.getCurrentPosition(setCoords, getLocError);
+    };
+
+    const setCoords = (pos) => {
+      fetchCoords.value = null;
+
+      const setSessionCoords = {
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+      };
+
+      sessionStorage.setItem("coords", JSON.stringify(setSessionCoords));
+
+      coords.value = setSessionCoords;
+    };
+
+    const getLocError = (error) => {
+      console.log(error);
+    };
   },
 };
 </script>
