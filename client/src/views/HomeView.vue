@@ -10,8 +10,10 @@ import { onMounted, ref } from "vue";
 export default {
   name: "HomeView",
   setup() {
+    let map;
+
     onMounted(() => {
-      let map = leaflet
+      map = leaflet
         .map("map")
         .setView([-23.079797902304385, -47.21396312836137], 10);
 
@@ -35,8 +37,15 @@ export default {
 
     const coords = ref(null);
     const fetchCoords = ref(null);
+    const geoMarker = ref(null);
 
     const getGeolocation = () => {
+      if (sessionStorage.getItem("coords")) {
+        coords.value = JSON.parse(sessionStorage.getItem("coords"));
+        plotGeolocation(coords.value);
+        return;
+      }
+
       fetchCoords.value = true;
       navigator.geolocation.getCurrentPosition(setCoords, getLocError);
     };
@@ -52,10 +61,27 @@ export default {
       sessionStorage.setItem("coords", JSON.stringify(setSessionCoords));
 
       coords.value = setSessionCoords;
+
+      plotGeolocation(coords.value);
     };
 
     const getLocError = (error) => {
       console.log(error);
+    };
+
+    const plotGeolocation = (geoCoords) => {
+      const customMarker = leaflet.icon({
+        iconUrl: require("../assets/images/map-marker-red.svg"),
+        iconSize: [35, 35],
+      });
+
+      geoMarker.value = leaflet
+        .marker([geoCoords.lat, geoCoords.lng], {
+          icon: customMarker,
+        })
+        .addTo(map);
+
+      map.setView([geoCoords.lat, geoCoords.lng], 10);
     };
   },
 };
