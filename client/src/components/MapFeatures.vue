@@ -30,8 +30,10 @@
           class="h-[200px] overflow-y-scroll bg-white rounded-md scrollbar-hidden shadow-md"
           v-if="searchText"
         >
+          <LoadingSpinner v-if="!searchData" />
           <div
-            class="flex px-4 py-2 transition-colors duration-200 cursor-pointer gap-x-2 group hover:bg-slate-600 hover:text-white"
+            v-else
+            class="flex items-center px-4 py-2 transition-colors duration-200 cursor-pointer gap-x-2 group hover:bg-slate-600 hover:text-white"
             v-for="(result, index) in searchData"
             :key="index"
           >
@@ -82,11 +84,15 @@
 <script>
 import { ref } from "vue";
 import axios from "axios";
+import LoadingSpinner from "./LoadingSpinner.vue";
 
 export default {
   props: {
     coords: Object,
     fetchCoords: Boolean,
+  },
+  components: {
+    LoadingSpinner,
   },
   setup(props) {
     const searchText = ref(null);
@@ -95,6 +101,8 @@ export default {
 
     const search = () => {
       clearTimeout(searchTimeout.value);
+
+      searchData.value = null;
 
       searchTimeout.value = setTimeout(async () => {
         if (searchText.value !== "") {
