@@ -131,7 +131,6 @@ export default {
       searchData.value = null;
 
       searchTimeout.value = setTimeout(async () => {
-        console.log(typeof searchText.value);
         if (String(searchText.value).trim() !== "") {
           const params = new URLSearchParams({
             fuzzyMatch: true,
@@ -145,7 +144,6 @@ export default {
             `http://localhost:3232/api/search/${searchText.value}?${params}`
           );
           searchData.value = getData.data.features;
-          console.log(searchData.value);
         }
       }, 750);
     };
