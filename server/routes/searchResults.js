@@ -3,7 +3,7 @@ const axios = require('axios')
 const url = require('url')
 const router = express.Router()
 
-router.get('/:query', async (req, res) => {
+router.get('/:searchText', async (req, res) => {
     try {
         const params = new URLSearchParams({
             access_token: process.env.API_KEY,
