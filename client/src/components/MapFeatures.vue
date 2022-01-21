@@ -9,6 +9,7 @@
         placeholder="Start your search"
         v-model="searchText"
         @input="search"
+        @focus="$emit('toggleSearchResults')"
       />
       <div class="absolute top-0 left-[8px] h-full flex items-center">
         <svg
@@ -28,7 +29,7 @@
       <div class="absolute w-full mt-2">
         <div
           class="h-[200px] overflow-y-scroll bg-white rounded-md scrollbar-hidden shadow-md"
-          v-if="searchText"
+          v-if="searchText && searchResults"
         >
           <LoadingSpinner v-if="!searchData" />
           <div
@@ -91,6 +92,7 @@ export default {
   props: {
     coords: Object,
     fetchCoords: Boolean,
+    searchResults: Boolean,
   },
   components: {
     LoadingSpinner,
