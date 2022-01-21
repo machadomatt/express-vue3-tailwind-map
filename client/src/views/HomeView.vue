@@ -9,6 +9,7 @@
       @getGeolocation="getGeolocation"
       @plotResult="plotResult"
       @toggleSearchResults="toggleSearchResults"
+      @removeResult="removeResult"
       :coords="coords"
       :fetchCoords="fetchCoords"
       :searchResults="searchResults"
@@ -151,6 +152,10 @@ export default {
       searchResults.value = false;
     };
 
+    const removeResult = () => {
+      map.removeLayer(resultMarker.value);
+    };
+
     return {
       coords,
       fetchCoords,
@@ -162,6 +167,7 @@ export default {
       searchResults,
       toggleSearchResults,
       closeSearchResults,
+      removeResult,
     };
   },
 };

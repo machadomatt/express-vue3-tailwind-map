@@ -55,6 +55,28 @@
             <p class="text-xs">{{ result.place_name_en }}</p>
           </div>
         </div>
+        <div v-if="selectedResult" class="px-4 py-3 mt-2 bg-white rounded-md">
+          <svg
+            @click="removeResult"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            focusable="false"
+            class="flex justify-end w-4 h-4 text-slate-600"
+            role="img"
+            viewBox="0 0 512 512"
+          >
+            <path
+              fill="currentColor"
+              d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm101.8-262.2L295.6 256l62.2 62.2c4.7 4.7 4.7 12.3 0 17l-22.6 22.6c-4.7 4.7-12.3 4.7-17 0L256 295.6l-62.2 62.2c-4.7 4.7-12.3 4.7-17 0l-22.6-22.6c-4.7-4.7-4.7-12.3 0-17l62.2-62.2-62.2-62.2c-4.7-4.7-4.7-12.3 0-17l22.6-22.6c4.7-4.7 12.3-4.7 17 0l62.2 62.2 62.2-62.2c4.7-4.7 12.3-4.7 17 0l22.6 22.6c4.7 4.7 4.7 12.3 0 17z"
+            />
+          </svg>
+          <h1 class="text-lg">{{ selectedResult.text }}</h1>
+          <p class="mb-1 text-xs">
+            {{ selectedResult.properties.address }}, {{ selectedResult.city }},
+            {{ selectedResult.state }}
+          </p>
+          <p class="text-xs">{{ selectedResult.properties.category }}</p>
+        </div>
       </div>
     </div>
     <div
@@ -101,6 +123,7 @@ export default {
     const searchText = ref(null);
     const searchData = ref(null);
     const searchTimeout = ref(null);
+    const selectedResult = ref(null);
 
     const search = () => {
       clearTimeout(searchTimeout.value);
@@ -128,10 +151,24 @@ export default {
     };
 
     const selectResult = (result) => {
+      selectedResult.value = result;
       emit("plotResult", result.geometry);
     };
 
-    return { searchText, searchData, searchTimeout, search, selectResult };
+    const removeResult = () => {
+      selectedResult.value = null;
+      emit("removeResult");
+    };
+
+    return {
+      searchText,
+      searchData,
+      searchTimeout,
+      selectedResult,
+      search,
+      selectResult,
+      removeResult,
+    };
   },
 };
 </script>
