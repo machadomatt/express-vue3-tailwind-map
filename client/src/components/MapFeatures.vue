@@ -105,7 +105,8 @@ export default {
       searchData.value = null;
 
       searchTimeout.value = setTimeout(async () => {
-        if (searchText.value !== "") {
+        console.log(typeof searchText.value);
+        if (String(searchText.value).trim() !== "") {
           const params = new URLSearchParams({
             fuzzyMatch: true,
             language: "en",
