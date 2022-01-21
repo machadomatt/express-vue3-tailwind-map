@@ -36,6 +36,7 @@
             class="flex items-center px-4 py-2 transition-colors duration-200 cursor-pointer gap-x-2 group hover:bg-slate-600 hover:text-white"
             v-for="(result, index) in searchData"
             :key="index"
+            @click="selectResult(result)"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +95,7 @@ export default {
   components: {
     LoadingSpinner,
   },
-  setup(props) {
+  setup(props, { emit }) {
     const searchText = ref(null);
     const searchData = ref(null);
     const searchTimeout = ref(null);
@@ -124,7 +125,11 @@ export default {
       }, 750);
     };
 
-    return { searchText, searchData, searchTimeout, search };
+    const selectResult = (result) => {
+      emit("plotResult", result.geometry);
+    };
+
+    return { searchText, searchData, searchTimeout, search, selectResult };
   },
 };
 </script>

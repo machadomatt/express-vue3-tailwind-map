@@ -7,6 +7,7 @@
     />
     <MapFeatures
       @getGeolocation="getGeolocation"
+      @plotResult="plotResult"
       :coords="coords"
       :fetchCoords="fetchCoords"
     />
@@ -53,6 +54,7 @@ export default {
     const geoMarker = ref(null);
     const geoError = ref(null);
     const geoErrorMsg = ref(null);
+    const resultMarker = ref(null);
 
     const getGeolocation = () => {
       if (coords.value) {
@@ -113,6 +115,25 @@ export default {
       geoErrorMsg.value = null;
     };
 
+    const plotResult = (geoCoords) => {
+      if (resultMarker.value) {
+        map.removeLayer(resultMarker.value);
+      }
+
+      const customMarker = leaflet.icon({
+        iconUrl: require("../assets/images/map-marker-blue.svg"),
+        iconSize: [35, 35],
+      });
+
+      resultMarker.value = leaflet
+        .marker([geoCoords.coordinates[1], geoCoords.coordinates[0]], {
+          icon: customMarker,
+        })
+        .addTo(map);
+
+      map.setView([geoCoords.coordinates[1], geoCoords.coordinates[0]], 14);
+    };
+
     return {
       coords,
       fetchCoords,
@@ -120,6 +141,7 @@ export default {
       closeGeoError,
       geoError,
       geoErrorMsg,
+      plotResult,
     };
   },
 };
