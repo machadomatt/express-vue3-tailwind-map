@@ -14,6 +14,16 @@ router.get('/:query', async (req, res) => {
             `https://api.mapbox.com/geocoding/v5/mapbox.places/${req.params.searchText}.json?${params}`
         )
 
+        results.data.features.forEach((item) => {
+            item.city = null
+            item.state = null
+
+            item.context.forEach((type) => {
+                if (type.id.includes('place')) item.city = type.text
+                if (type.id.includes('region')) item.state = type.text
+            })
+        })
+
         return res.status(200).json(results.data)
     } catch (err) {
         return res.status(500).json({ error: err.message })
