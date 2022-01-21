@@ -48,6 +48,10 @@ export default {
         )
         .addTo(map);
 
+      map.on("moveend", () => {
+        closeSearchResults();
+      });
+
       getGeolocation();
     });
 
