@@ -31,7 +31,7 @@ export default {
 
     onMounted(() => {
       map = leaflet
-        .map("map")
+        .map("map", { markerZoomAnimation: false })
         .setView([-23.079797902304385, -47.21396312836137], 10);
 
       leaflet
