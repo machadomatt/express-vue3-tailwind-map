@@ -141,7 +141,7 @@ export default {
               : "0,0",
           });
           const getData = await axios.get(
-            `http://localhost:3232/api/search/${searchText.value}?${params}`
+            `api/search/${searchText.value}?${params}`
           );
           searchData.value = getData.data.features;
         }
