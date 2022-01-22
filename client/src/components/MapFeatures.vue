@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full md:w-auto absolute md:top-[40px] md:left-[60px] z-[2] flex gap-4 px-6 py-8 md:p-0 bg-transparent"
+    class="w-full md:w-auto absolute md:top-[40px] md:left-[40px] z-[2] flex gap-4 px-6 py-8 md:p-0 bg-transparent"
   >
     <div class="relative flex-1 md:min-w-[350px]">
       <input
